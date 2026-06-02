@@ -6,6 +6,8 @@ _BATCH_SIZE = 100
 _MAX_RETRIES = 3
 
 
+_NGROK_HEADERS = {"ngrok-skip-browser-warning": "true"}
+
 async def _embed_ollama_batch(texts: list[str], model: str) -> list[list[float]]:
     async with httpx.AsyncClient(timeout=60) as client:
         results: list[list[float]] = []
@@ -15,6 +17,7 @@ async def _embed_ollama_batch(texts: list[str], model: str) -> list[list[float]]
                     resp = await client.post(
                         f"{settings.OLLAMA_URL}/api/embeddings",
                         json={"model": model, "prompt": text},
+                        headers=_NGROK_HEADERS,
                     )
                     resp.raise_for_status()
                     results.append(resp.json()["embedding"])

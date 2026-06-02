@@ -3,6 +3,8 @@ import json
 from typing import AsyncIterator
 from app.config import settings
 
+_NGROK_HEADERS = {"ngrok-skip-browser-warning": "true"}
+
 
 # ── Ollama ────────────────────────────────────────────────────────────────────
 
@@ -17,7 +19,7 @@ async def stream_ollama(
     }
     async with httpx.AsyncClient(timeout=120) as client:
         async with client.stream(
-            "POST", f"{settings.OLLAMA_URL}/api/chat", json=payload
+            "POST", f"{settings.OLLAMA_URL}/api/chat", json=payload, headers=_NGROK_HEADERS
         ) as resp:
             async for line in resp.aiter_lines():
                 if not line.strip():
@@ -42,7 +44,7 @@ async def call_ollama_json(prompt: str, model: str) -> str:
         "messages": [{"role": "user", "content": prompt}],
     }
     async with httpx.AsyncClient(timeout=30) as client:
-        resp = await client.post(f"{settings.OLLAMA_URL}/api/chat", json=payload)
+        resp = await client.post(f"{settings.OLLAMA_URL}/api/chat", json=payload, headers=_NGROK_HEADERS)
         resp.raise_for_status()
     return resp.json()["message"]["content"]
 
@@ -156,7 +158,7 @@ async def call_llm_plain(prompt: str, model: str) -> str:
             "messages": [{"role": "user", "content": prompt}],
         }
         async with httpx.AsyncClient(timeout=30) as client:
-            resp = await client.post(f"{settings.OLLAMA_URL}/api/chat", json=payload)
+            resp = await client.post(f"{settings.OLLAMA_URL}/api/chat", json=payload, headers=_NGROK_HEADERS)
             resp.raise_for_status()
         return resp.json()["message"]["content"].strip()
     elif settings.LLM_PROVIDER == "claude":

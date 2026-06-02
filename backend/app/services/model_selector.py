@@ -49,10 +49,12 @@ EMBED_DIMS_MAP: dict[str, int] = {
 }
 
 
+_NGROK_HEADERS = {"ngrok-skip-browser-warning": "true"}
+
 async def list_ollama_models() -> list[str]:
     try:
         async with httpx.AsyncClient(timeout=5) as client:
-            resp = await client.get(f"{settings.OLLAMA_URL}/api/tags")
+            resp = await client.get(f"{settings.OLLAMA_URL}/api/tags", headers=_NGROK_HEADERS)
             data = resp.json()
             return [m["name"] for m in data.get("models", [])]
     except Exception as e:
