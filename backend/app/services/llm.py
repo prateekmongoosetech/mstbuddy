@@ -96,7 +96,7 @@ async def stream_openrouter(
     stream = await client.chat.completions.create(
         model=model,
         messages=[{"role": "system", "content": system}, *messages],
-        max_tokens=2048,
+        max_tokens=1024,
         temperature=0.2,
         stream=True,
     )

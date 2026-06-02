@@ -132,7 +132,7 @@ $backendEnv = @(
     @{ key = "EMBEDDING_PROVIDER";      value = "jina" }
     @{ key = "EMBED_MODEL";             value = "jina-embeddings-v2-base-en" }
     @{ key = "QDRANT_COLLECTION";       value = "mst_docs" }
-    @{ key = "TOP_K";                   value = "6" }
+    @{ key = "TOP_K";                   value = "4" }
     @{ key = "REDIS_URL";               value = "" }
     @{ key = "CRAWL_ON_STARTUP";        value = "true" }
     @{ key = "CRAWL_MAX_PAGES";         value = "60" }
@@ -142,7 +142,7 @@ $backendEnv = @(
     @{ key = "WEB_SEARCH_MAX_RESULTS";  value = "4" }
     @{ key = "WEB_SEARCH_FETCH_CONTENT"; value = "true" }
     @{ key = "RERANK_ENABLED";          value = "false" }
-    @{ key = "MAX_HISTORY_TURNS";       value = "10" }
+    @{ key = "MAX_HISTORY_TURNS";       value = "5" }
 )
 
 # Inject secrets from .env
@@ -157,7 +157,7 @@ foreach ($key in @("OPENROUTER_API_KEY","JINA_API_KEY","QDRANT_URL","QDRANT_API_
 $frontendUrl = if ($frontendId) { "https://mst-buddy-ui.onrender.com" } else { "http://localhost:3001" }
 $backendEnv += @{ key = "CORS_ORIGINS"; value = $frontendUrl }
 
-Invoke-RenderApi -Method PUT -Path "/services/$backendId/env-vars" -Body @{ envVars = $backendEnv } | Out-Null
+Invoke-RenderApi -Method PUT -Path "/services/$backendId/env-vars" -Body $backendEnv | Out-Null
 Write-Host "  Backend env vars set ($($backendEnv.Count) vars)." -ForegroundColor Green
 
 # ── Step 5: Set frontend env vars ────────────────────────────────────────────
@@ -173,7 +173,7 @@ if ($frontendId) {
         @{ key = "VITE_API_URL"; value = $backendFullUrl }
         @{ key = "VITE_API_KEY"; value = ($env["CHATBOT_API_KEY"] ?? "") }
     )
-    Invoke-RenderApi -Method PUT -Path "/services/$frontendId/env-vars" -Body @{ envVars = $frontendEnv } | Out-Null
+    Invoke-RenderApi -Method PUT -Path "/services/$frontendId/env-vars" -Body $frontendEnv | Out-Null
     Write-Host "  Frontend env vars set." -ForegroundColor Green
     Write-Host "    VITE_API_URL = $backendFullUrl" -ForegroundColor Gray
 }
