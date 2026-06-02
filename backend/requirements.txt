@@ -20,8 +20,8 @@ langchain-text-splitters==0.3.4
 pymupdf==1.25.1
 python-docx==1.1.2
 
-# SPA rendering
-playwright==1.52.0
+# SPA rendering (optional — only needed for local dev with Playwright)
+# playwright==1.52.0
 
 # Web search & crawling
 httpx==0.28.1
