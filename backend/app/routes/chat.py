@@ -179,9 +179,15 @@ async def _generate_sse(
     yield f"data: {json.dumps({'type': 'sources', 'sources': sources, 'strategy': strategy})}\n\n"
 
     full_answer = ""
-    async for token in stream_llm(messages, system, chat_model=chat_model):
-        full_answer += token
-        yield f"data: {json.dumps({'type': 'token', 'content': token})}\n\n"
+    try:
+        async for token in stream_llm(messages, system, chat_model=chat_model):
+            full_answer += token
+            yield f"data: {json.dumps({'type': 'token', 'content': token})}\n\n"
+    except Exception as llm_err:
+        logger.error("llm_stream_error", error=str(llm_err), model=chat_model)
+        yield f"data: {json.dumps({'type': 'error', 'content': f'The AI model encountered an error: {llm_err}'})}\n\n"
+        yield f"data: {json.dumps({'type': 'done'})}\n\n"
+        return
 
     latency = round((time.monotonic() - t0) * 1000)
     logger.info(

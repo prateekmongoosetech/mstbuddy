@@ -88,6 +88,13 @@ export function useChat() {
               m.id === assistantId ? { ...m, content: fullContent } : m
             )
           );
+        } else if (event.type === "error") {
+          fullContent = event.content ?? "The AI model returned an error. Please try again.";
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId ? { ...m, content: fullContent } : m
+            )
+          );
         } else if (event.type === "done") {
           break;
         }

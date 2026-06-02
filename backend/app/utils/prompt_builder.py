@@ -17,15 +17,26 @@ Context:
 {context}"""
 
 
+_MAX_CONTEXT_CHARS = 6000  # ~1500 tokens — keeps total prompt within free model limits
+
 def _format_context(chunks: list[dict]) -> str:
     if not chunks:
         return "No relevant context found."
     parts = []
+    total = 0
     for i, c in enumerate(chunks, 1):
         source = c.get("source", "unknown")
         page = c.get("page")
         loc = f" (page {page})" if page else ""
-        parts.append(f"[{i}] Source: {source}{loc}\n{c.get('text', '')}")
+        text = c.get("text", "")
+        # Truncate individual chunks that are disproportionately large
+        if len(text) > 1500:
+            text = text[:1500] + "…"
+        entry = f"[{i}] Source: {source}{loc}\n{text}"
+        if total + len(entry) > _MAX_CONTEXT_CHARS:
+            break
+        parts.append(entry)
+        total += len(entry)
     return "\n\n---\n\n".join(parts)
 
 
