@@ -1,14 +1,32 @@
 """
 Logs every chat interaction to SQLite for analysis and future training.
-Stored at /app/data/conversations.db inside the container (mount as volume).
+Path resolves to a writable location on both Docker (/app/data) and
+Render's native runtime (/tmp) based on write-access check at import time.
 """
 
+import os
 import sqlite3
 import json
 import time
 from pathlib import Path
 
-DB_PATH = Path("/app/data/conversations.db")
+
+def _resolve_db_path() -> Path:
+    candidates = [
+        Path("/app/data/conversations.db"),
+        Path(os.environ.get("RENDER_PROJECT_DIR", "/tmp")) / "data" / "conversations.db",
+        Path("/tmp/conversations.db"),
+    ]
+    for p in candidates:
+        try:
+            p.parent.mkdir(parents=True, exist_ok=True)
+            return p
+        except OSError:
+            continue
+    return candidates[-1]  # /tmp fallback always writable
+
+
+DB_PATH = _resolve_db_path()
 
 
 def _get_conn() -> sqlite3.Connection:
