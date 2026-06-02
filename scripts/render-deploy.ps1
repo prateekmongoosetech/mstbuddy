@@ -127,8 +127,8 @@ Write-Host "Setting backend environment variables..." -ForegroundColor Cyan
 
 $backendEnv = @(
     @{ key = "LLM_PROVIDER";            value = "openrouter" }
-    @{ key = "LLM_MODEL";               value = "deepseek/deepseek-chat-v3-0324:free" }
-    @{ key = "ROUTER_MODEL";            value = "deepseek/deepseek-chat-v3-0324:free" }
+    @{ key = "LLM_MODEL";               value = "google/gemma-4-31b-it:free" }
+    @{ key = "ROUTER_MODEL";            value = "google/gemma-4-31b-it:free" }
     @{ key = "EMBEDDING_PROVIDER";      value = "jina" }
     @{ key = "EMBED_MODEL";             value = "jina-embeddings-v2-base-en" }
     @{ key = "QDRANT_COLLECTION";       value = "mst_docs" }

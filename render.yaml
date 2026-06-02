@@ -13,9 +13,9 @@ services:
       - key: LLM_PROVIDER
         value: openrouter
       - key: LLM_MODEL
-        value: deepseek/deepseek-chat-v3-0324:free
+        value: google/gemma-4-31b-it:free
       - key: ROUTER_MODEL
-        value: deepseek/deepseek-chat-v3-0324:free
+        value: google/gemma-4-31b-it:free
 
       # Embeddings — Jina AI free tier
       - key: EMBEDDING_PROVIDER
