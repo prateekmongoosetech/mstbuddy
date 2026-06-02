@@ -1,0 +1,42 @@
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+pydantic==2.10.3
+pydantic-settings==2.7.0
+python-multipart==0.0.20
+
+# Vector DB
+qdrant-client==1.12.1
+
+# LLM
+anthropic==0.40.0
+openai==1.58.1
+
+# Embeddings & LangChain
+langchain==0.3.13
+langchain-community==0.3.13
+langchain-text-splitters==0.3.4
+
+# Document parsing
+pymupdf==1.25.1
+python-docx==1.1.2
+
+# SPA rendering
+playwright==1.52.0
+
+# Web search & crawling
+httpx==0.28.1
+beautifulsoup4==4.12.3
+lxml==5.3.0
+fake-useragent==1.5.1
+
+# Caching
+redis==5.2.1
+
+# Logging
+structlog==24.4.0
+
+# Rate limiting
+slowapi==0.1.9
+
+# Reranking (optional)
+cohere==5.13.4
