@@ -13,9 +13,9 @@ services:
       - key: LLM_PROVIDER
         value: openrouter
       - key: LLM_MODEL
-        value: qwen/qwen-2.5-7b-instruct:free
+        value: deepseek/deepseek-chat-v3-0324:free
       - key: ROUTER_MODEL
-        value: qwen/qwen-2.5-7b-instruct:free
+        value: deepseek/deepseek-chat-v3-0324:free
 
       # Embeddings — Jina AI free tier
       - key: EMBEDDING_PROVIDER
