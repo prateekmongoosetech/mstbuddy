@@ -29,7 +29,7 @@ export interface ChatRequest {
 }
 
 export interface SSEEvent {
-  type: "sources" | "token" | "done";
+  type: "sources" | "token" | "done" | "error";
   content?: string;
   sources?: SourceChunk[];
   strategy?: string;
